@@ -1,7 +1,7 @@
 import "./globals.css";
 
 export const metadata = {
-  title: "ZipBuzz",
+  title: "InsiderTrack",
   description: "Community-verified local news",
 };
 
@@ -33,7 +33,7 @@ export default function RootLayout({
         >
           <div style={{ fontWeight: 700, fontSize: 20 }}>
             <a href="/" style={{ color: "white", textDecoration: "none" }}>
-              ZipBuzz
+              InsiderTrack
             </a>
           </div>
 

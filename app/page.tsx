@@ -22,7 +22,7 @@ export default function Home() {
               letterSpacing: "-0.02em",
             }}
           >
-            ZipBuzz
+            InsiderTrack
           </h1>
 
           <p
@@ -33,8 +33,8 @@ export default function Home() {
               lineHeight: 1.6,
             }}
           >
-            Community-powered local news. Report what’s happening around you
-            and help verify what’s real.
+            Community-powered local news. Share what’s happening nearby and see
+            how the community responds through real-time voting.
           </p>
 
           <div style={{ marginTop: 32 }}>
@@ -89,7 +89,7 @@ export default function Home() {
         {/* HOW IT WORKS */}
         <section style={{ marginBottom: 80 }}>
           <h2 style={{ fontSize: 28, marginBottom: 24 }}>
-            How ZipBuzz Works
+            How InsiderTrack Works
           </h2>
 
           <div
@@ -101,19 +101,22 @@ export default function Home() {
           >
             {[
               {
-                title: "Post Local News",
-                desc: "Share events like accidents, outages, or celebrations.",
+                title: "Post Local Updates",
+                desc:
+                  "Share nearby events such as traffic, incidents, outages, or community happenings.",
                 icon: "📝",
               },
               {
-                title: "Community Verification",
-                desc: "Locals vote to confirm whether reports are accurate.",
+                title: "Community Voting",
+                desc:
+                  "Locals vote true or false to reflect how credible a report appears.",
                 icon: "🗳️",
               },
               {
-                title: "Earn Trust & Rewards",
-                desc: "Accurate posts earn money. False ones lose credibility.",
-                icon: "💰",
+                title: "Collective Insight",
+                desc:
+                  "Vote totals reveal community consensus rather than a single declared truth.",
+                icon: "📊",
               },
             ].map((item) => (
               <div
@@ -147,11 +150,10 @@ export default function Home() {
         {/* FOOTER */}
         <section>
           <p style={{ fontSize: 14, color: "#64748b" }}>
-            ZipBuzz works because communities value accuracy over noise.
+            InsiderTrack surfaces community consensus without claiming absolute truth.
           </p>
         </section>
       </div>
     </div>
   );
 }
-

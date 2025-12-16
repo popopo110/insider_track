@@ -3,61 +3,59 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../../lib/supabase";
 
+/* ---------- Types ---------- */
+
 type Post = {
-  id: number;
-  title:string;
+  id: string;          // UUID
+  title: string;
   body: string;
-  status: string;
   created_at: string;
+  true_votes: number;
+  false_votes: number;
 };
 
-
+/* ---------- Feed Page ---------- */
 
 export default function CommunityFeed() {
-  const [posts, setPosts] = useState<any[]>([]);
+  const [posts, setPosts] = useState<Post[]>([]);
 
-async function loadPosts() {
-  const { data, error } = await supabase
-    .from("posts")
-    .select("*")
-    .order("created_at", { ascending: false });
+  async function loadPosts() {
+    const { data, error } = await supabase
+      .from("posts")
+      .select("*")
+      .order("created_at", { ascending: false });
 
-if (error) {
-  return;
-}
+    if (error) {
+      console.error("Load posts failed:", error);
+      return;
+    }
 
-  setPosts(data || []);
-}
+    setPosts(data || []);
+  }
 
-useEffect(() => {
-  loadPosts();
+  useEffect(() => {
+    loadPosts();
 
-  const channel = supabase
-    .channel("posts-feed")
-    .on(
-      "postgres_changes",
-      {
-        event: "INSERT",
-        schema: "public",
-        table: "posts",
-      },
-      () => {
-        loadPosts();
-      }
-    )
-    .subscribe();
+    const channel = supabase
+      .channel("posts-feed")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "posts" },
+        () => loadPosts()
+      )
+      .subscribe();
 
-  return () => {
-    supabase.removeChannel(channel);
-  };
-}, []);
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, []);
 
   return (
     <main style={{ padding: 32 }}>
       <h1>Community Feed</h1>
-      <p>Vote to verify local news</p>
+      <p>React with True or False to reflect community sentiment.</p>
 
-      {posts.map(post => (
+      {posts.map((post) => (
         <PostCard key={post.id} post={post} reload={loadPosts} />
       ))}
 
@@ -68,17 +66,24 @@ useEffect(() => {
 
 /* ---------- Post Card ---------- */
 
-function PostCard({ post, reload }: any) {
-  async function vote(vote: "true" | "false") {
-    const DEMO_USER = "demo-user";
-
-    await supabase.from("votes").upsert({
+function PostCard({
+  post,
+  reload,
+}: {
+  post: Post;
+  reload: () => void;
+}) {
+  async function vote(type: "true" | "false") {
+    const { error } = await supabase.rpc("vote_post", {
       post_id: post.id,
-      voter: DEMO_USER,
-      vote
+      vote_type: type,
     });
 
-    await recomputePost(post.id);
+    if (error) {
+      console.error("Vote failed:", error);
+      return;
+    }
+
     reload();
   }
 
@@ -89,59 +94,63 @@ function PostCard({ post, reload }: any) {
         borderRadius: 8,
         padding: 16,
         marginBottom: 16,
-        background: "#111"
+        background: "#111",
       }}
     >
       <h3>{post.title}</h3>
       <p>{post.body}</p>
 
-      <p>
-        Status:{" "}
-        <b
-          style={{
-            color:
-              post.status === "true"
-                ? "#22c55e"
-                : post.status === "false"
-                ? "#ef4444"
-                : "#eab308"
-          }}
+      {/* Reaction Bar */}
+      <div className="reaction-bar">
+        <button
+          className="reaction true"
+          onClick={() => vote("true")}
         >
-          {post.status}
-        </b>
-      </p>
+          👍 True <span>{post.true_votes}</span>
+        </button>
 
-      {post.status === "pending" && (
-        <div style={{ marginTop: 8 }}>
-          <button onClick={() => vote("true")}>True</button>
-          <button onClick={() => vote("false")} style={{ marginLeft: 8 }}>
-            False
-          </button>
-        </div>
-      )}
+        <button
+          className="reaction false"
+          onClick={() => vote("false")}
+        >
+          👎 False <span>{post.false_votes}</span>
+        </button>
+      </div>
+
+      <style jsx>{`
+        .reaction-bar {
+          display: flex;
+          gap: 12px;
+          margin-top: 12px;
+        }
+
+        .reaction {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          padding: 8px 14px;
+          border-radius: 999px;
+          border: 1px solid #334155;
+          background: transparent;
+          color: #e5e7eb;
+          cursor: pointer;
+          font-weight: 500;
+        }
+
+        .reaction:hover {
+          background: #020617;
+        }
+
+        .reaction.true span {
+          color: #22c55e;
+          font-weight: 600;
+        }
+
+        .reaction.false span {
+          color: #ef4444;
+          font-weight: 600;
+        }
+      `}</style>
     </div>
   );
 }
-
-/* ---------- Vote Recompute ---------- */
-
-async function recomputePost(postId: string) {
-  const { data } = await supabase
-    .from("votes")
-    .select("*")
-    .eq("post_id", postId);
-
-  const votes = data || [];
-
-  const trueVotes = votes.filter(v => v.vote === "true").length;
-  const falseVotes = votes.filter(v => v.vote === "false").length;
-
-  if (trueVotes >= 3) {
-    await supabase.from("posts").update({ status: "true" }).eq("id", postId);
-  }
-
-  if (falseVotes >= 3) {
-    await supabase.from("posts").update({ status: "false" }).eq("id", postId);
-  }
-}
-
