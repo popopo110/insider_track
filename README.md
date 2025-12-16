@@ -1,4 +1,19 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+🧱 Tech Stack
+
+Next.js (App Router) & React — frontend framework and UI components
+
+TypeScript — type-safe, maintainable codebase
+
+Supabase — backend services including PostgreSQL, Realtime updates, and RPC functions
+
+PostgreSQL — relational database with UUIDs and atomic vote counters
+
+Ollama (optional) — local LLM runtime for AI-powered features without external APIs
+
+Git & GitHub — version control and collaboration
+
+Vercel (optional) — deployment platform for Next.js apps
 
 ## Getting Started
 🔧 Installing Ollama
