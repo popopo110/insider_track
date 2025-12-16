@@ -1,6 +1,19 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
+🔧 Installing Ollama
+
+brew install ollama
+
+Or download from:
+
+https://ollama.com
+
+
+Start the service:
+
+ollama serve
+
 
 First, run the development server:
 
