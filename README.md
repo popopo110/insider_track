@@ -2,18 +2,18 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 🔧 Installing Ollama
-
+```bash
 brew install ollama
+```
 
 Or download from:
 
 https://ollama.com
 
-
 Start the service:
-
+```bash
 ollama serve
-
+```
 
 First, run the development server:
 
