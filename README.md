@@ -47,3 +47,21 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+
+## ⚠️ Backend Setup Required
+
+InsiderTrack uses **Supabase** as its backend for:
+- Data storage (posts and votes)
+- Realtime updates
+- Secure database access
+
+If you download this repository as a ZIP or clone it, the application UI will run, but **backend features will not function until Supabase is configured**.
+
+To run InsiderTrack locally with full functionality, you must:
+1. Create a Supabase project
+2. Set up the required database tables and functions
+3. Add your Supabase credentials to `.env.local`
+
+This separation ensures security and mirrors real-world production setups.
+
