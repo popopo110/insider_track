@@ -1,8 +1,5 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
-
-## Getting Started
-
-🧱 Tech Stack
+##🧱 Tech Stack
 
 Next.js (App Router) & React — frontend framework and UI components
 
@@ -18,6 +15,8 @@ Git & GitHub — version control and collaboration
 
 Vercel (optional) — deployment platform for Next.js apps
 
+
+## Getting Started
 
 🔧 Installing Ollama
 ```bash
